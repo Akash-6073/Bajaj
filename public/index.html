@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+        <input type="text" id="input">
+        <button id="get">Get</button>
+        <button id="post">Post</button>
+        <div>
+            <h1 id="display"></h1>
+        </div>
+    </form>
+    <script>
+        const getBtn = document.getElementById('get');
+        const postBtn = document.getElementById('post');
+        const input = document.getElementById('input');
+        const baseURL = "http://localhost:8383/"
+
+        getBtn.addEventListener('click',getInfo)
+        postBtn.addEventListener('click',postInfo)
+        async function getInfo(e){
+            e.preventDefault();
+            const res = await fetch(baseURL+'info/akash',{
+                method:"GET"
+            })
+            console.log(res);
+            const data = await res.json();
+            input.value = data.info
+        }
+        async function postInfo(e){
+            e.preventDefault();
+            if(input.value=='') {return}
+            const res = await fetch(baseURL,{
+                method:"POST",
+                headers:{
+                    "Content-Type" : 'application/json'
+                },
+                body: JSON.stringify({
+                    parcel: input.value
+                })
+            })
+            display.textContent = input.value
+        }
+    </script>
+</body>
+</html>
